@@ -1,0 +1,90 @@
+/* Clone a Binary Tree */
+
+class Node {
+    int data;
+    Node left, right;
+
+    public Node(int data) {
+        this.data = data;
+        left = right = null;
+    }
+}
+
+class BinaryTree {
+    Node root;
+
+    public void printInOrder() {
+        printInOrder(root);
+    }
+
+    public void printInOrder(Node root) {
+        if (root != null) {
+            printInOrder(root.left);
+            System.out.print(root.data + " ");
+            printInOrder(root.right);
+        }
+    }
+}
+
+final class CloneTree {
+    Node root;
+
+    CloneTree(Node baseRoot) {
+        root = cloneTree(baseRoot);
+    }
+
+    public Node cloneTree(Node baseRoot) {
+        if (baseRoot != null) {
+            Node root = new Node(baseRoot.data);
+
+            root.left = cloneTree(baseRoot.left);
+            root.right = cloneTree(baseRoot.right);
+            return root;
+        }
+        return null;
+    }
+
+    public void printInOrder() {
+        printInOrder(root);
+    }
+
+    public void printInOrder(Node root) {
+        if (root != null) {
+            printInOrder(root.left);
+            System.out.print(root.data + " ");
+            printInOrder(root.right);
+        }
+    }
+}
+
+public class CloneBT {
+
+    public static void main(String[] args) {
+        /* Constructing below tree
+               5
+             /   \
+            3     6
+           / \     \
+          1   4     8
+         / \       / \
+        0   2     7   9  */
+
+        BinaryTree tree = new BinaryTree();
+        tree.root = new Node(5);
+        tree.root.left = new Node(3);
+        tree.root.right = new Node(6);
+        tree.root.left.right = new Node(4);
+        tree.root.left.left = new Node(1);
+        tree.root.right.right = new Node(8);
+        tree.root.left.left.right = new Node(2);
+        tree.root.left.left.left = new Node(0);
+        tree.root.right.right.left = new Node(7);
+        tree.root.right.right.right = new Node(9);
+        tree.printInOrder();
+
+        System.out.println();
+        CloneTree ctree = new CloneTree(tree.root);
+        ctree.printInOrder();
+    }
+
+}
