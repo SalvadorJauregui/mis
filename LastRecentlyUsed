@@ -1,0 +1,38 @@
+package lru;
+
+import java.util.HashSet;
+import java.util.LinkedList;
+
+class LastRecentlyUsed<V> {
+
+    int size;
+    HashSet<V> map;
+    LinkedList<V> cache;
+
+    public LastRecentlyUsed(int size) {
+        this.size = size;
+        map = new HashSet<>();
+        cache = new LinkedList<>();
+    }
+
+    /***** CORE ALGO *****/
+    public void add(V item) {
+        // If exist move to the head
+        if (map.contains(item) == true) {
+            cache.remove(item);
+            cache.addFirst(item);
+        } else {
+            // Check the size before add new element
+            if ( size <= cache.size()) {
+                // remove latest item from map and cache
+                map.remove(cache.removeLast());
+            }
+            map.add(item);
+            cache.addFirst(item);
+        }
+    }
+
+    public void getCacheContent() {
+        System.out.println(cache);
+    }
+}
