@@ -1,0 +1,131 @@
+package treetodll;
+
+// Java program to convert a given Binary Tree to 
+import java.util.ArrayList;
+
+// Doubly Linked List
+/* Structure for tree and Linked List */
+class Node {
+
+    int data;
+    Node left, right;
+
+    public Node(int data) {
+        this.data = data;
+        left = right = null;
+    }
+
+    public Node() {
+
+    }
+}
+
+class BinaryTree {
+
+    ArrayList<Integer> array = new ArrayList<>();
+    // 'root' - root of binary tree
+    Node root;
+
+    // 'head' - reference to head node of created
+    //double linked list
+    Node head;
+
+    /***** CORE ALGO ****/
+    public void convertBTtoDLL(Node root) {
+        /* It must insert a head all the time in order not to loose it */
+        if (root != null) {
+            convertBTtoDLL(root.right);
+
+            if (head != null) {
+                root.right = head; // set one link
+                head.left = root;  // set the other link
+                head = root;  //update head
+            } else {
+                head = root;
+            }
+
+            convertBTtoDLL(root.left);
+        }
+    }
+
+    // Utility function for printing double linked list.
+    void printList(Node head) {
+        System.out.println("Extracted Double Linked List is : ");
+        while (head != null) {
+            System.out.print(head.data + " ");
+            head = head.right;
+        }
+    }
+
+    /* It does not modify the tree structure */
+    public void printLeavesInOrder(Node root) {
+        if (root != null) {
+            printLeavesInOrder(root.left);
+
+            if (root.left == null && root.right == null) {
+                System.out.print(" " + root.data);
+            }
+
+            printLeavesInOrder(root.right);
+        }
+    }
+
+    private void addNodeToDLL(Node root) {
+        if (root == null) {
+            head = root;
+        } else {
+            root.right = head;
+            head.left = root;
+            head = root;
+        }
+    }
+
+    /* Save all leaf nodes of a Binary tree in a Doubly Linked List by using
+        Right node as Next node and Left Node as Previous Node*/
+    public void saveLeaves(Node root) {
+        if (root != null) {
+            saveLeaves(root.left);
+
+            if (root.right == null && root.left == null) { //leave
+                array.add(root.data);
+            }
+
+            saveLeaves(root.right);
+        }
+    }
+
+    public void printLeaves() {
+        for (int i = 0; i < array.size(); i++) {
+            System.out.print(array.get(i) + " ");
+        }
+    }
+
+    // Driver program to test the above functions
+    public static void main(String[] args) {
+        /* Constructing below tree
+               5
+             /   \
+            3     6
+           / \     \
+          1   4     8
+         / \       / \
+        0   2     7   9  */
+
+        BinaryTree tree = new BinaryTree();
+        tree.root = new Node(5);
+        tree.root.left = new Node(3);
+        tree.root.right = new Node(6);
+        tree.root.left.right = new Node(4);
+        tree.root.left.left = new Node(1);
+        tree.root.right.right = new Node(8);
+        tree.root.left.left.right = new Node(2);
+        tree.root.left.left.left = new Node(0);
+        tree.root.right.right.left = new Node(7);
+        tree.root.right.right.right = new Node(9);
+
+        tree.saveLeaves(tree.root);
+        tree.printLeaves();
+        tree.convertBTtoDLL(tree.root);
+        tree.printList(tree.head);
+    }
+}
