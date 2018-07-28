@@ -37,8 +37,6 @@ class Solution {
 }
 
 
-
-
 /* Solution 2: CANNNOT contain duplicated */
 class Solution {
     public List<List<Integer>> threeSum(int[] nums) {
@@ -64,4 +62,26 @@ class Solution {
         return list;
     }
 }
+
+
+/* Solution 3: nums come from diferente arrays allowing duplicated elements */
+ public static List<List<Integer>> threeSum(int[] A, int[] B, int[] C) {
+        List<List<Integer>> list = new ArrayList<>();
+        /* Add in Set the array C*/
+        Set<Integer> set = new HashSet<>();
+        for (int x : C)
+            set.add(x);
+
+        /* Go throught A + C combination */
+        for (int i = 0; i < A.length; i++){
+            for (int j = 0; j < B.length; j++){
+                int complement = -(A[i] + B[j]);
+                if (set.contains(complement)){
+                    list.add(Arrays.asList(A[i], B[j], complement));
+                }
+            }
+        }        
+        return list;
+    }
+
 
